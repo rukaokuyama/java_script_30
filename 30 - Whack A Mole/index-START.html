@@ -9,7 +9,7 @@
       type="text/css"
     />
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="https://fav.farm/🔥" />
+    <link rel="icon" href="https://fav.farm/✅" />
   </head>
   <body>
     <h1>Whack-a-mole! <span class="score">0</span></h1>
@@ -42,18 +42,19 @@
       const moles = document.querySelectorAll(".mole");
       let lastHole;
       let timeUp = false;
+      let score = 0;
 
       function randomTime(min, max) {
-        return Math.random() * (max - min) + min;
+        return Math.round(Math.random() * (max - min) + min);
       }
 
       function randomHole(holes) {
         const idx = Math.floor(Math.random() * holes.length);
         const hole = holes[idx];
         if (hole === lastHole) {
+          console.log("Ah nah thats the same one bud");
           return randomHole(holes);
         }
-
         lastHole = hole;
         return hole;
       }
@@ -71,9 +72,19 @@
       function startGame() {
         scoreBoard.textContent = 0;
         timeUp = false;
+        score = 0;
         peep();
         setTimeout(() => (timeUp = true), 10000);
       }
+
+      function bonk(e) {
+        if (!e.isTrusted) return; // cheater!
+        score++;
+        this.parentNode.classList.remove("up");
+        scoreBoard.textContent = score;
+      }
+
+      moles.forEach((mole) => mole.addEventListener("click", bonk));
     </script>
   </body>
 </html>
